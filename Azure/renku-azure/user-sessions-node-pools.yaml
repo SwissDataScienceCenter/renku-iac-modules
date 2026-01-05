@@ -1,0 +1,36 @@
+---
+pools:
+  - name: default
+    sizes: ["2", "4", "8"]
+    user_sessions: true
+    min_count: 0
+    # If autoscaling is disabled, max_count defines the fixed node count
+    max_count: 10
+    auto_scaling_enabled: true
+    # By default the following taints will be applied:
+    # - renku.io/dedicated=user:NoSchedule
+    # - renku.io/gpu-parted=true:NoSchedule (only for GPU pools)
+    # You can add additional taints using the `additional_taints` field.
+    # NOTE: There should be at least one taint with effect NoSchedule to avoid scheduling user-sessions from different
+    # groups/organizations!
+    additional_taints: []
+    # By default the following labels will be applied:
+    # - renku.io/node-purpose=user
+    # - renku.io/expiration=<expiration>
+    # - gputype=nvidia (only for GPU pools)
+    # - gpuA100-parted=true (only for GPU pools)
+    # You can add additional labels using the `additional_labels` field
+    additional_labels: {}
+    # If the expiration date is in the past then a warning will be raised when applying the terraform plan.
+    # No automations are in place to delete or scale down the node pool after expiration.
+    expiration: "2035-12-31"
+    renku_resource_id: "0000-0000-0000-0000"
+  - name: default
+    sizes: ["GPU10"]
+    user_sessions: true
+    max_count: 1
+    auto_scaling_enabled: true
+    additional_taints:
+      - "renku.io/gpu-parted=true:NoSchedule"
+    expiration: "2035-12-31"
+    renku_resource_id: "0000-0000-0000-0000"
